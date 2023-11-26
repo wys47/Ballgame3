@@ -281,7 +281,7 @@ public class PlayerCS : MonoBehaviour
             }
             if (referee.GameStat == 3)
             {
-                if (referee.TouchCount == 3) print(IsAnimPlaying);//thkly
+                if (referee.TouchCount == 3 && gameObj.name == "OutsideHitter1" && !IsOp) print(IsAnimPlaying);
                 int TC = referee.TouchCount;
                 if (MyBall)
                 {
@@ -621,11 +621,7 @@ public class PlayerCS : MonoBehaviour
                 BallRigid.AddTorque(BallTr.right * BallSpinPower);
                 ballCS.ChangeBallState("normal");
 
-                if (teamCS.PlayerCtrl_PlayerNumber == StandingPositionNumber)
-                {
-                    BallTr.rotation = Quaternion.Euler(camCtrl.CameraHolderTr.rotation.eulerAngles.x + settingCS.SpikeAngleX, Spike_AngleY, 0);
-                    print(3);
-                }
+                if (teamCS.PlayerCtrl_PlayerNumber == StandingPositionNumber) BallTr.rotation = Quaternion.Euler(camCtrl.CameraHolderTr.rotation.eulerAngles.x + settingCS.SpikeAngleX, Spike_AngleY, 0);
                 else BallTr.LookAt(new Vector3(BallTr.position.x - BallTr.position.z * Mathf.Tan(Spike_AngleY * Mathf.PI / 180), referee.NetHight + SpikeNetHightPlusRotX, 0));
 
                 TurnAngle *= 2 - (DelicacyLv + SpikeLv) * ProficiencyLvManipulator;
@@ -901,7 +897,6 @@ public class PlayerCS : MonoBehaviour
                         anim.SetBool("run", false);
 
                         BlockTriggered = 1;
-                        IsAnimPlaying = 2;
                         anim.SetFloat("anim play speed", 1);
                         anim.SetTrigger("block");
                     }
@@ -1798,26 +1793,29 @@ public class PlayerCS : MonoBehaviour
     {
         Impact = true;
         IsAnimPlaying = AnimNum;
+        if (referee.TouchCount == 3 && gameObj.name == "OutsideHitter1" && !IsOp && AnimNum == 0) print("1%");
     }
     public void AnimEndEvent(int Option = 0)
     {
         AnimEnd = true;
 
-        if (IsAnimPlaying > 0)
+        if (IsAnimPlaying != 2)
         {
             StartCoroutine(Timer(WaitBeforeAnimEnd));
             if (ItsTime == 1) anim.SetTrigger("idle");
             if (Option == 2) gameObjTr.Translate(Vector3.forward * 1.2f);
             IsAnimPlaying = 0;
+            if (referee.TouchCount == 3 && gameObj.name == "OutsideHitter1" && !IsOp) print("2%");
         }
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.tag == "ground" && IsAnimPlaying == -1)
+        if (collision.collider.tag == "ground" && IsAnimPlaying == 2)
         {
             IsAnimPlaying = 0;
             StartCoroutine(Timer(WaitBeforeAnimEnd));
             if (ItsTime == 1) anim.SetTrigger("idle");
+            if (referee.TouchCount == 3 && gameObj.name == "OutsideHitter1" && !IsOp) print("3%");
         }
     }
 
