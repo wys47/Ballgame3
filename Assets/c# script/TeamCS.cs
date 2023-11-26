@@ -431,7 +431,7 @@ public class TeamCS : MonoBehaviour
                 Receive_PlayerCtrl = true;
                 Block_PlayerCtrl = false;
                 Setup_PlayerCtrl = false;
-                Spike_PlayerCtrl = true;
+                Spike_PlayerCtrl = false;
             }
             else
             {

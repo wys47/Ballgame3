@@ -57,7 +57,7 @@ public class PlayerCS : MonoBehaviour
     private float BlockJumpMinusStamina = 1f;
     private float BlockPlusMental = 5f;
     private float BlockMinusMental = 5f;
-    private float BasicReflexTime = 0.6f;
+    private float BasicReflexTime = 0.4f;
     private float ReflexLvManipulator = 0.1f;
     private float BlockHight = 4f;
     //receive
@@ -1793,7 +1793,6 @@ public class PlayerCS : MonoBehaviour
     {
         Impact = true;
         IsAnimPlaying = AnimNum;
-        if (referee.TouchCount == 3 && gameObj.name == "OutsideHitter1" && !IsOp && AnimNum == 0) print("1%");
     }
     public void AnimEndEvent(int Option = 0)
     {
@@ -1805,7 +1804,6 @@ public class PlayerCS : MonoBehaviour
             if (ItsTime == 1) anim.SetTrigger("idle");
             if (Option == 2) gameObjTr.Translate(Vector3.forward * 1.2f);
             IsAnimPlaying = 0;
-            if (referee.TouchCount == 3 && gameObj.name == "OutsideHitter1" && !IsOp) print("2%");
         }
     }
     private void OnCollisionEnter(Collision collision)
@@ -1815,7 +1813,6 @@ public class PlayerCS : MonoBehaviour
             IsAnimPlaying = 0;
             StartCoroutine(Timer(WaitBeforeAnimEnd));
             if (ItsTime == 1) anim.SetTrigger("idle");
-            if (referee.TouchCount == 3 && gameObj.name == "OutsideHitter1" && !IsOp) print("3%");
         }
     }
 
